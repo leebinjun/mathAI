@@ -13,6 +13,7 @@
 * 更复杂的算式？
 
 ## Demo
+![deme](./etcs/000.jpg)
+  
 ![deme](./etcs/001.png)  
   
-![deme](./etcs/002.jpg)
