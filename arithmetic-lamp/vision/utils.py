@@ -53,8 +53,7 @@ LARGEST_NUMBER_OF_SYMBOLS = 50
 # 读取图片并将图片转化成二值图,返回原彩色图和二值图
 def read_img_and_convert_to_binary(img):
     #读取待处理的图片
-    original_img = img
-    original_img = cv2.resize(original_img, (600,200))
+    original_img = cv2.resize(img, (600,200))
     # print(original_img)
     #将原图分辨率缩小SCALSIZE倍，减少计算复杂度
     original_img = cv2.resize(original_img,(np.int(original_img.shape[1]/SCALSIZE),np.int(original_img.shape[0]/SCALSIZE)), interpolation=cv2.INTER_AREA)
@@ -88,6 +87,8 @@ def img_segment(binary_img, original_img):
     symbol_filepath = []
     # 将每一个联通体，作为一个字符
     index = 1
+    # print("len:", len(contours))
+    num_id = 0
     for contour in contours:
         location = cv2.boundingRect(contour)
         x, y, w, h = location
@@ -100,27 +101,30 @@ def img_segment(binary_img, original_img):
             y_center = int(y + h/2)
             x_center = int(x + w/4)
             img_save = original_img[y_center-32:y_center+32, x_center-21:x_center+21, :]
-            num_filepath = r".\data" + '\\' + str(time.time())+'.jpg'
+            num_filepath = r".\data" + '\\' + str(num_id)+'.jpg'
+            num_id = num_id + 1
             cv2.imwrite(num_filepath, img_save)
             symbol_filepath.append(num_filepath)
             x_center = int(x + w*3/4)
             img_save = original_img[y_center-32:y_center+32, x_center-21:x_center+21, :]
-            num_filepath = r".\data" + '\\' + str(time.time())+'.jpg'
+            num_filepath = r".\data" + '\\' + str(num_id)+'.jpg'
+            num_id = num_id + 1
             cv2.imwrite(num_filepath, img_save)
             symbol_filepath.append(num_filepath)
         elif x > 580 or x < 20: # 边缘的噪点
             pass
         else:
-            symbol_segment_location.append(location)
+            symbol_segment_location.append((x, y, w, h))
             x_center = int(x + w/2)
             y_center = int(y + h/2)
             img_save = original_img[y_center-32:y_center+32, x_center-21:x_center+21, :]
-            num_filepath = r".\data" + '\\' + str(time.time())+'.jpg'
+            num_filepath = r".\data" + '\\' + str(num_id)+'.jpg'
+            num_id = num_id + 1
             cv2.imwrite(num_filepath, img_save)
             symbol_filepath.append(num_filepath)
         cv2.rectangle(original_img, (x, y), (x + w, y + h), (0, 0, 255), 3)
         
-    symbols=[]
+    symbols = []
     for i in range(len(symbol_segment_location)):
         symbols.append({'location':symbol_segment_location[i], 'filepath':symbol_filepath[i]})
     # 对字符按字符横坐标排序

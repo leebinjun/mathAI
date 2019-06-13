@@ -15,6 +15,11 @@ if __name__ == "__main__":
     img_list = os.listdir(path)
     for filename in img_list:
         img_path = path + '\\' + filename
+        
+        # img = cv2.imrcv2.resize(img, (42, 64))
+        # cv2.imwrite(iead(img_path)
+        # img_resize = mg_path, img_resize)
+        
         ret, score = ident.chessidentify(img_path)
         
         old_path = img_path

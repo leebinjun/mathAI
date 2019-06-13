@@ -47,17 +47,18 @@ def main():
             for img_equation in get_equation(img_perspective):
                 cv2.imshow("eq", img_equation)
                 # print("here")
-                eq_name = r".\data" + '\\' + str(time.time())+'.jpg'
-                cv2.imwrite(eq_name, img_equation)
+                # eq_name = r".\data" + '\\' + str(time.time())+'.jpg'
+                # cv2.imwrite(eq_name, img_equation)
                 # cv2.waitKey(0)
 
                 original_img, binary_img = read_img_and_convert_to_binary(img_equation)
                 symbols = img_segment(binary_img, original_img)
                 cv2.imshow("", original_img)
-                # print(symbols)
+                # print("syyyyy:", symbols)
                 cv2.waitKey(0)
                 
                 s_ret = []
+                ans = 0
                 for i in symbols:
                     ret, score = ident.chessidentify(i["filepath"])
                     # print("ret:", ret)
@@ -74,6 +75,11 @@ def main():
                         print("something wrong!")
                 print(s_ret)
                 print(ans)
+
+        if ch == ord('b'):
+            print("get_handfinger_points")
+            pass
+            
 
 
 if __name__ == '__main__':
